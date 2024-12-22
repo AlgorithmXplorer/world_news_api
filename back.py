@@ -78,7 +78,7 @@ class news_repo:
         self.language = "en"
         self.country = "us"
         self.date = ""
-        self.author = ""
+        self.author = "DANIEL MERCER"
         self.categorie = ""
         self.text = ""
 
@@ -92,14 +92,14 @@ class news_repo:
         def inner(choice):
             if choice == 1:    
                 if self.date == "":
-                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&country={self.country}&author={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&country={self.country}&authors={self.author}&number=50"
                 else:
-                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&country={self.country}&earliest-publish-date={self.date}&author={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&country={self.country}&earliest-publish-date={self.date}&authors={self.author}&number=50"
             elif choice == 2:
                 if self.date == "":
-                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&country={self.country}&author={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&country={self.country}&authors={self.author}&number=50"
                 else:
-                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&country={self.country}&earliest-publish-date={self.date}&author={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&country={self.country}&earliest-publish-date={self.date}&authors={self.author}&number=50"
             return website_url
         news_list = []
         def inner_2(URL):
@@ -158,9 +158,9 @@ def search_news(repo_object,text):
 
     def inner():
         if date == "":
-            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&author={author}&number=20"
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&authors={author}&number=20"
         else:
-            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&author={author}&number=20&earliest-publish-date={date}"
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&authors={author}&number=20&earliest-publish-date={date}"
         return url
     url = inner()
     response = requests.get(url=url , headers= repo_object.header)
@@ -172,11 +172,28 @@ def search_news(repo_object,text):
     return news_list
 
 
-x = news_repo()
-text = input("text: ")
-news_list = search_news(x,text)
-for i in news_list:
-    i.get_news()
+def page_creater(list_of_news):
+    split_list = []
+    num = len(list_of_news) // 10
+    if num*10 < len(list_of_news) :
+        page_number = num +1
+    else:
+        page_number = num
+    for i in range(page_number):
+        x = list_of_news[i*10 : (i+1) *10 ]
+        split_list.append(x)
+    return split_list
+
+
+
+
+
+
+# x = news_repo()
+# text = input("text: ")
+# news_list = search_news(x,text)
+# for i in news_list:
+#     i.get_news()
 
 
 # x = news_repo()
