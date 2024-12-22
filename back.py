@@ -78,7 +78,7 @@ class news_repo:
         self.language = "en"
         self.country = "us"
         self.date = ""
-        self.author = "DANIEL MERCER"
+        self.author = ""
         self.categorie = ""
         self.text = ""
 
@@ -92,14 +92,14 @@ class news_repo:
         def inner(choice):
             if choice == 1:    
                 if self.date == "":
-                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&country={self.country}&authors={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&source-country={self.country}&authors={self.author}&number=50"
                 else:
-                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&country={self.country}&earliest-publish-date={self.date}&authors={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?categories={self.categorie}&language={self.language}&source-country={self.country}&earliest-publish-date={self.date}&authors={self.author}&number=50"
             elif choice == 2:
                 if self.date == "":
-                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&country={self.country}&authors={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&source-country={self.country}&authors={self.author}&number=50"
                 else:
-                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&country={self.country}&earliest-publish-date={self.date}&authors={self.author}&number=50"
+                    website_url = self.website_url + f"/search-news?text={self.text}&language={self.language}&source-country={self.country}&earliest-publish-date={self.date}&authors={self.author}&number=50"
             return website_url
         news_list = []
         def inner_2(URL):
@@ -149,19 +149,58 @@ class news_repo:
 #todo sayfalama modu getir. her sayfada 10 tane haber olucak. bunu harici  bir fonksiyon ile yap
 #todo haber arama modu getirmen lazım.
 
+def get_top_news(repo_object):
+    language = repo_object.language 
+    country = repo_object.country 
+    url = "https://api.worldnewsapi.com" + f"/top-news?source-country={country}&language={language}"
+    response = requests.get(url = url,headers = repo_object.header)
+    response = json.loads(response.text)["top_news"]
+    
+    def inner(news_dicti):
+        def inner2(attrubte):
+            try:
+                param = news_dicti[attrubte]
+            except KeyError:
+                param = ""
+            return param
+        title = inner2("title")
+        url = inner2("url")
+        publish_date = inner2("publish_date")
+        summary = inner2("summary")
+        authors = inner2("authors")
+        x = news(language=language,country=country,time=publish_date,author=authors,category="",url=url,title=title,summary=summary)
+        return x
+    list_of_news = []
+    for dicti in response:
+        news_list = dicti["news"]
+        for i in news_list:
+            news_object = inner(i)
+            list_of_news.append(news_object)
+    return list_of_news[:25]
+
+    
+
+
+    
 
 def search_news(repo_object,text):
     language = repo_object.language 
     country = repo_object.country 
     date  = repo_object.date 
     author  = repo_object.author
+    
 
     def inner():
+        text = text.strip()
+        if len(text.split(" ")) > 1:
+            text = text.replace(" ", "-")
         if date == "":
-            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&authors={author}&number=20"
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&source-country={country}&authors={author}&number=20"
         else:
-            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&authors={author}&number=20&earliest-publish-date={date}"
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&source-country={country}&authors={author}&number=20&earliest-publish-date={date}"
         return url
+    
+
     url = inner()
     response = requests.get(url=url , headers= repo_object.header)
     response = json.loads(response.text)
@@ -187,13 +226,12 @@ def page_creater(list_of_news):
 
 
 
-
-
 # x = news_repo()
-# text = input("text: ")
-# news_list = search_news(x,text)
+# # text = input("text: ")
+# news_list = get_top_news(x)
 # for i in news_list:
 #     i.get_news()
+# print(len(news_list))
 
 
 # x = news_repo()
