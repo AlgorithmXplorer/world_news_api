@@ -42,7 +42,7 @@ class news:
             new_str = Style.BRIGHT + Fore.RED + param + Style.RESET_ALL
             return new_str
         elif choice == 2:    
-            new_str = Style.BRIGHT + Fore.BLUE + param + Style.RESET_ALL
+            new_str = Style.BRIGHT + param + Style.RESET_ALL
             return new_str
         
     
@@ -79,8 +79,8 @@ class news_repo:
         self.country = "us"
         self.date = ""
         self.author = ""
-        self.categorie = "science"
-        self.text = "science"
+        self.categorie = ""
+        self.text = ""
 
         self.website_url = "https://api.worldnewsapi.com"
         self.api_key = "cead7d36af904c9a9cb91ce0eef816de"
@@ -146,10 +146,48 @@ class news_repo:
         new_news = news(language=news_language , country= news_country ,time = news_time , author= news_author , category= news_category , url= news_url , title= news_title , summary= news_summary )
         return new_news
 
+#todo sayfalama modu getir. her sayfada 10 tane haber olucak. bunu harici  bir fonksiyon ile yap
+#todo haber arama modu getirmen lazım.
+
+
+def search_news(repo_object,text):
+    language = repo_object.language 
+    country = repo_object.country 
+    date  = repo_object.date 
+    author  = repo_object.author
+
+    def inner():
+        if date == "":
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&author={author}&number=20"
+        else:
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&country={country}&author={author}&number=20&earliest-publish-date={date}"
+        return url
+    url = inner()
+    response = requests.get(url=url , headers= repo_object.header)
+    response = json.loads(response.text)
+    news_list = []
+    for index,i in enumerate(response["news"]):
+        news = repo_object.news_maker(i)
+        news_list.append(news)
+    return news_list
+
 
 x = news_repo()
-x.categories_news_provider()
-print(len(x.list_of_news))
+text = input("text: ")
+news_list = search_news(x,text)
+for i in news_list:
+    i.get_news()
+
+
+# x = news_repo()
+# x.categories_news_provider()
+# for i in x.list_of_news:
+#     print("*" * 50)
+#     i.get_news()
+#     # print("*" * 50)
+
+
+
 
 
 
