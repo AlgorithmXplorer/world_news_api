@@ -69,13 +69,15 @@ class news_writter:
 
         
 x = news_repo()
-x.categories_news_provider("sports")
+x.language = "tr"
+x.country = "tr"
+x.categories_news_provider("politics")
 a = news_writter(x.list_of_news)
 a.pages()
 class panel:
 
     def __init__(self):
-        self.categories = ["Breaking News","Technology News","Sports News","Business News","Science News","Culture News", "Entertainment News"]
+        self.categories = ["Breaking News","Politics News","Technology News","Sports News","Business News","Science News","Culture News", "Entertainment News"]
         self.repo = news_repo
 
 
