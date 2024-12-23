@@ -83,11 +83,13 @@ class news_repo:
         self.text = ""
 
         self.website_url = "https://api.worldnewsapi.com"
-        self.api_key = "cead7d36af904c9a9cb91ce0eef816de"
+        self.api_key = "a8b75e91fd554e38b3f5a439c973b850"
         self.header = {"x-api-key" : self.api_key}
         self.list_of_news = []
 
-    def categories_news_provider(self):
+    def categories_news_provider(self,category):
+        self.categorie = category
+        self.text = category
         #* the inner function sets the website URL based on what is choice because both the title attributes and categories attributes brings different results
         def inner(choice):
             if choice == 1:    
@@ -146,10 +148,13 @@ class news_repo:
         new_news = news(language=news_language , country= news_country ,time = news_time , author= news_author , category= news_category , url= news_url , title= news_title , summary= news_summary )
         return new_news
 
-#todo sayfalama modu getir. her sayfada 10 tane haber olucak. bunu harici  bir fonksiyon ile yap
-#todo haber arama modu getirmen lazım.
 
 def get_top_news(repo_object):
+    """
+    This function makes an API call to get the top news using the given repo_object.
+    It takes repo_object as input and uses its language and country features to fetch the news.
+    As output, it returns a list with necessary information for each news item.
+    """
     language = repo_object.language 
     country = repo_object.country 
     url = "https://api.worldnewsapi.com" + f"/top-news?source-country={country}&language={language}"
@@ -157,6 +162,11 @@ def get_top_news(repo_object):
     response = json.loads(response.text)["top_news"]
     
     def inner(news_dicti):
+        """
+        This inner function processes the news data and converts it into a news object.
+        It takes a dictionary (news_dicti) as input and extracts details like title, URL, authors, and summary.
+        The output is an object that contains information about the news.
+        """
         def inner2(attrubte):
             try:
                 param = news_dicti[attrubte]
@@ -184,6 +194,11 @@ def get_top_news(repo_object):
     
 
 def search_news(repo_object,text):
+    """
+    This function searches for news using a specific keyword (text) and returns related news.
+    It takes repo_object and a search text as input, then makes an API call to process the result.
+    As output, it returns a list of news found from the search.
+    """
     language = repo_object.language 
     country = repo_object.country 
     date  = repo_object.date 
@@ -212,6 +227,11 @@ def search_news(repo_object,text):
 
 
 def page_creater(list_of_news):
+    """
+    This function is used to divide the news list into pages.
+    It takes a news list as input and splits it into pages with a maximum of 10 news items per page.
+    The output is a list containing the news divided into pages.
+    """
     split_list = []
     num = len(list_of_news) // 10
     if num*10 < len(list_of_news) :
@@ -225,23 +245,8 @@ def page_creater(list_of_news):
 
 
 
-
-# x = news_repo()
-# # text = input("text: ")
-# news_list = get_top_news(x)
-# for i in news_list:
-#     i.get_news()
-# print(len(news_list))
-
-
-# x = news_repo()
-# x.categories_news_provider()
-# for i in x.list_of_news:
-#     print("*" * 50)
-#     i.get_news()
-#     # print("*" * 50)
-
-
+#todo ilk önce diğer gmailden yeni api al sonra function ların Description larını hazırla ve dosyayı clearla.
+#todo ardından main dosyasına geç ve projeyi bitir.  
 
 
 
