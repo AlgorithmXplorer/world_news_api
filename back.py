@@ -86,6 +86,37 @@ class news_repo:
         self.api_key = "cead7d36af904c9a9cb91ce0eef816de"
         self.header = {"x-api-key" : self.api_key}
         self.list_of_news = []
+    
+    def news_maker(self,news_dicti):
+        """
+        This function creates a news object using the data provided as a dictionary.
+
+        Explanation:
+        
+        It processes the news_dict parameter containing news data.
+        Returns a news object if successful, or None in case of an error.
+        Example: Returns a news object if the dictionary contains author and title, otherwise raises an error.
+        
+        """
+        my_news = news_dicti
+        def inner(attrubte):
+            try:
+                param = my_news[attrubte]
+            except KeyError:
+                param = ""
+            return param
+                
+
+        news_author = inner("authors")
+        news_title = inner("title")
+        news_time = inner("publish_date")
+        news_url = inner("url")
+        news_summary = inner("summary")
+        news_category = inner("category")
+        news_language = inner("language")
+        news_country = inner("source_country")
+        new_news = news(language=news_language , country= news_country ,time = news_time , author= news_author , category= news_category , url= news_url , title= news_title , summary= news_summary )
+        return new_news
 
     def categories_news_provider(self,category):
         self.categorie = category
@@ -117,36 +148,6 @@ class news_repo:
             
 
 
-    def news_maker(self,news_dicti):
-        """
-        This function creates a news object using the data provided as a dictionary.
-
-        Explanation:
-        
-        It processes the news_dict parameter containing news data.
-        Returns a news object if successful, or None in case of an error.
-        Example: Returns a news object if the dictionary contains author and title, otherwise raises an error.
-        
-        """
-        my_news = news_dicti
-        def inner(attrubte):
-            try:
-                param = my_news[attrubte]
-            except KeyError:
-                param = ""
-            return param
-                
-
-        news_author = inner("authors")
-        news_title = inner("title")
-        news_time = inner("publish_date")
-        news_url = inner("url")
-        news_summary = inner("summary")
-        news_category = inner("category")
-        news_language = inner("language")
-        news_country = inner("source_country")
-        new_news = news(language=news_language , country= news_country ,time = news_time , author= news_author , category= news_category , url= news_url , title= news_title , summary= news_summary )
-        return new_news
 
 
 def get_top_news(repo_object):
@@ -205,18 +206,18 @@ def search_news(repo_object,text):
     author  = repo_object.author
     
 
-    def inner():
+    def inner(param):
         text = text.strip()
         if len(text.split(" ")) > 1:
             text = text.replace(" ", "-")
         if date == "":
-            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&source-country={country}&authors={author}&number=20"
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={param}&language={language}&source-country={country}&authors={author}&number=20"
         else:
-            url = "https://api.worldnewsapi.com" + f"/search-news?text={text}&language={language}&source-country={country}&authors={author}&number=20&earliest-publish-date={date}"
+            url = "https://api.worldnewsapi.com" + f"/search-news?text={param}&language={language}&source-country={country}&authors={author}&number=20&earliest-publish-date={date}"
         return url
     
 
-    url = inner()
+    url = inner(text)
     response = requests.get(url=url , headers= repo_object.header)
     response = json.loads(response.text)
     news_list = []
