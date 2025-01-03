@@ -71,7 +71,7 @@ class news_writter:
 # x = news_repo()
 # x.language = "en"
 # x.country = "us"
-# x.categories_news_provider("politics")
+# x.categories_news_provider("science")
 # a = news_writter(x.list_of_news)
 # a.pages()
 class panel:
@@ -101,7 +101,7 @@ class panel:
                 break
 
     def main(self):
-        #* burası chice attribute'una göre çalıştıırlcak fonksiyonların yeri
+        #* burası choice attribute'una göre çalıştıırlcak fonksiyonların yeri
         pass
     def set_filters(self):
         def language():
@@ -157,23 +157,54 @@ class panel:
         self.main()
                 
     def set_populer_news(self):
-        pass
+        list_of_news = get_top_news(self.repo)
+        writer_func = news_writter(list_of_news)
+        writer_func.pages()
+        self.main()
+
+
     def set_Technology_News(self):
-        pass
-    def set_(self):
-        pass
+        self.repo.categories_news_provider("technology")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+
     def set_Politics(self):
-        pass
+        self.repo.categories_news_provider("politics")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+        
     def set_entertainment(self):
-        pass
+        self.repo.categories_news_provider("entertainment")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+        
     def set_culture(self):
-        pass
+        self.repo.categories_news_provider("culture")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+        
     def set_science(self):
-        pass
+        self.repo.categories_news_provider("science")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+        
     def set_business(self):
-        pass
+        self.repo.categories_news_provider("business")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+        
     def set_Sports_News(self):
-        pass
+        self.repo.categories_news_provider("sports")
+        writer_func = news_writter(self.repo.list_of_news)
+        writer_func.pages()
+        self.main()
+        
     def search_news(self):
         pass
 
@@ -182,5 +213,5 @@ class panel:
 x = panel()
 # x.getting_operation()
 
-x.set_filters()
+x.set_Sports_News()
 
