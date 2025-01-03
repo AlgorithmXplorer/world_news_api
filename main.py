@@ -21,11 +21,9 @@ class news_writter:
                     print(Style.BRIGHT + Fore.BLUE + f"PAGE: {str(self.page_index + 1)}" + Style.RESET_ALL)
                     choice = input("next page(n) Previous page(p) or exit(e): ").lower().strip()
                     if choice != "n" and choice != "p" and choice != "e":
-                        print(choice)
-                        raise ValueError("please choose properly") 
+                        print("please choose properly") 
                     else:
                         return choice
-
                 else:
                     break
                 
@@ -34,7 +32,7 @@ class news_writter:
                     print(Style.BRIGHT + Fore.BLUE + f"PAGE: {str(self.page_index + 1)}" + Style.RESET_ALL)
                     choice = input("next page(n) or exit(e): ").lower().strip()
                     if choice != "n" and  choice != "e":
-                        raise ValueError("please choose properly")
+                        print("please choose properly")
                     else:
                         return choice
                 else:
@@ -44,7 +42,7 @@ class news_writter:
                     print(Style.BRIGHT + Fore.BLUE + f"PAGE: {str(self.page_index + 1)}" + Style.RESET_ALL)
                     choice = input("Previous page(p) or exit(e): ").lower().strip()
                     if choice != "p" and choice != "e":
-                        raise ValueError("please choose properly") 
+                        print("please choose properly") 
                     else:
                         return choice
 
@@ -103,6 +101,7 @@ class panel:
     def main(self):
         #* burası choice attribute'una göre çalıştıırlcak fonksiyonların yeri
         pass
+    
     def set_filters(self):
         def language():
             url = "https://worldnewsapi.com/docs/language-codes/"
@@ -162,7 +161,6 @@ class panel:
         writer_func.pages()
         self.main()
 
-
     def set_Technology_News(self):
         self.repo.categories_news_provider("technology")
         writer_func = news_writter(self.repo.list_of_news)
@@ -206,12 +204,21 @@ class panel:
         self.main()
         
     def search_news(self):
-        pass
-
+        while True:
+            try :
+                self.repo.text = input("news title or News subject: ")
+                self.repo.list_of_news = search_news(self.repo, self.repo.text)
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+            except IndexError:
+                print("There is no news about this title")
+            else:
+                break
+        self.main()
+        
 #todo panelde kullanıcının girdiği işleme göre main içinde fonksiyon çalıştırılıcak. 
 #todo her haberin kendi bir sistemi olduğu için her biri farklı fonksiyon
 x = panel()
 # x.getting_operation()
 
-x.set_Sports_News()
-
+x.search_news()
