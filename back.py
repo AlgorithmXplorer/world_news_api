@@ -83,7 +83,7 @@ class news_repo:
         self.text = ""
 
         self.website_url = "https://api.worldnewsapi.com"
-        self.api_key = "cead7d36af904c9a9cb91ce0eef816de"
+        self.api_key = "a8b75e91fd554e38b3f5a439c973b850"
         self.header = {"x-api-key" : self.api_key}
         self.list_of_news = []
     
@@ -207,9 +207,10 @@ def search_news(repo_object,text):
     
 
     def inner(param):
-        text = text.strip()
-        if len(text.split(" ")) > 1:
-            text = text.replace(" ", "-")
+        param = param.strip()
+        param.upper()
+        if len(param.split(" ")) > 1:
+            param = param.replace(" ", "-")
         if date == "":
             url = "https://api.worldnewsapi.com" + f"/search-news?text={param}&language={language}&source-country={country}&authors={author}&number=20"
         else:
