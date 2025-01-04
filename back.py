@@ -83,7 +83,7 @@ class news_repo:
         self.text = ""
 
         self.website_url = "https://api.worldnewsapi.com"
-        self.api_key = "a8b75e91fd554e38b3f5a439c973b850"
+        self.api_key = "cead7d36af904c9a9cb91ce0eef816de"
         self.header = {"x-api-key" : self.api_key}
         self.list_of_news = []
     
