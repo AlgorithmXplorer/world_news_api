@@ -65,13 +65,6 @@ class news_writter:
             elif choice == "e":
                 break
 
-        
-# x = news_repo()
-# x.language = "en"
-# x.country = "us"
-# x.categories_news_provider("science")
-# a = news_writter(x.list_of_news)
-# a.pages()
 class panel:
     def __init__(self):
         self.categories = ["Breaking News","Politics News","Technology News","Sports News","Business News","Science News","Culture News", "Entertainment News","news search (title and or News subject)"]
@@ -99,8 +92,40 @@ class panel:
                 break
 
     def main(self):
-        #* burası choice attribute'una göre çalıştıırlcak fonksiyonların yeri
-        pass
+        self.getting_operation()
+        if self.choice == "f":
+            self.set_filters()
+        
+        elif self.choice == "1":
+            self.set_populer_news()
+        
+        elif self.choice == "2":
+            self.set_Politics()
+        
+        elif self.choice == "3":
+            self.set_Technology_News()
+        
+        elif self.choice == "4":
+            self.set_Sports_News()
+        
+        elif self.choice == "5":
+            self.set_business()
+
+        elif self.choice == "6":
+            self.set_science()
+        
+        elif self.choice == "7":
+            self.set_culture()
+        
+        elif self.choice == "8":
+            self.set_entertainment()
+        
+        elif self.choice == "9":
+            self.search_news()
+        
+        elif self.choice == "e":
+            print("Exit completed")
+    
     
     def set_filters(self):
         def language():
@@ -109,23 +134,27 @@ class panel:
             html_codes = requests.get(url=url,headers=header).content
             soup = BeautifulSoup(html_codes,"html.parser")
             languages = soup.find("div",{"id":"apiDocRightSide"}).find_all("td")
-            list_language = [x.text for x in languages if len(x.text) == 2]
-            return list_language
+            list_short_language = [x.text for x in languages if len(x.text) == 2]
+            list_long_language = [x.text for x in languages if len(x.text) > 2]
+            return [list_long_language,list_short_language]
         def country():
             url = "https://worldnewsapi.com/docs/country-codes/"
             header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
             html_codes = requests.get(url=url,headers=header).content
             soup = BeautifulSoup(html_codes,"html.parser")
             countrys = soup.find("div",{"id":"apiDocRightSide"}).find_all("td")
-            list_country = [x.text for x in countrys if len(x.text) == 2]
-            return list_country        
+            list_short_country = [x.text for x in countrys if len(x.text) == 2]
+            list_long_country = [x.text for x in countrys if len(x.text) > 2]
+            return [list_long_country,list_short_country]        
         list_language =  language()
         list_country = country()
         while True:
             choice = input("1-language\n2-country\n3-earliest publish date\n4-author\nwhich filter will be changed: ")
             if choice =="1" :
+                for name,value in zip(list_language[0],list_language[1]):
+                    print(f"{name}- {value}")
                 language = input("language(short form, like en ): ")
-                if language in list_language:
+                if language in list_language[1]:
                     self.repo.language = language
                 else:
                     print("there is not a language like this")
@@ -133,8 +162,10 @@ class panel:
                 break
             
             elif choice == "2":
+                for name,value in zip(list_country[0],list_country[1]):
+                    print(f"{name}- {value}")
                 country = input("country(short form, like us ): ")
-                if country in list_country:
+                if country in list_country[1]:
                     self.repo.country = country
                 else:
                     print("there is not a country like this")
@@ -156,69 +187,136 @@ class panel:
         self.main()
                 
     def set_populer_news(self):
-        list_of_news = get_top_news(self.repo)
-        writer_func = news_writter(list_of_news)
-        writer_func.pages()
+        while True:
+            try :
+                list_of_news = get_top_news(self.repo)
+                writer_func = news_writter(list_of_news)
+                writer_func.pages()
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
+        
 
     def set_Technology_News(self):
-        self.repo.categories_news_provider("technology")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("technology")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
 
     def set_Politics(self):
-        self.repo.categories_news_provider("politics")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("politics")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
         
     def set_entertainment(self):
-        self.repo.categories_news_provider("entertainment")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("entertainment")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
         
     def set_culture(self):
-        self.repo.categories_news_provider("culture")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("culture")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
         
     def set_science(self):
-        self.repo.categories_news_provider("science")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("science")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
         
     def set_business(self):
-        self.repo.categories_news_provider("business")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("business")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
         
     def set_Sports_News(self):
-        self.repo.categories_news_provider("sports")
-        writer_func = news_writter(self.repo.list_of_news)
-        writer_func.pages()
+        while True:
+            try:
+                self.repo.categories_news_provider("sports")
+                writer_func = news_writter(self.repo.list_of_news)
+                writer_func.pages()
+                
+            except IndexError:
+                print("There is no news about this filters")
+                break
+            else:
+                break
         self.main()
         
     def search_news(self):
         while True:
             try :
-                self.repo.text = input("news title or News subject: ")
+                self.repo.text = input("news title or News subject(exit:e): ")
+                if self.repo.text =="e":
+                    raise IndexError
+                    
                 self.repo.list_of_news = search_news(self.repo, self.repo.text)
                 writer_func = news_writter(self.repo.list_of_news)
                 writer_func.pages()
+
             except IndexError:
                 print("There is no news about this title")
+                break
             else:
                 break
         self.main()
-        
-#todo panelde kullanıcının girdiği işleme göre main içinde fonksiyon çalıştırılıcak. 
-#todo her haberin kendi bir sistemi olduğu için her biri farklı fonksiyon
-x = panel()
-# x.getting_operation()
 
-x.search_news()
+
+
+x = panel()
+x.main()
