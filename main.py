@@ -174,12 +174,18 @@ class panel:
                 break
             
             elif choice == "3":
-                date = input("date(2020/2025-1/12-1/31): ")
-                self.repo.date = date
+                date = input("date(2020/2025-1/12-1/31)(clear:c): ")
+                if date == "c":
+                    self.repo.date = ""
+                else:
+                    self.repo.date = date
                 break
             elif choice == "4":
-                author = input("Author: ").title()
-                self.repo.author = author
+                author = input("Author(clear:c): ")
+                if author == "c":
+                    self.repo.author = ""
+                else:
+                    self.repo.author = author.title()
                 break
             else:
                 print("please fill the space correctly".center(50,"*"))
