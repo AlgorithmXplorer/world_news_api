@@ -2,20 +2,38 @@
 from back import *
 from bs4 import BeautifulSoup
 class news_writter:
+    """
+    self.list: News received from the user is assigned to this list.
+    self.page_index: A counter that tracks which page is being displayed (default is 0).
+    """
     def __init__(self,news_list):
         self.list = news_list
         self.page_index = 0
 
+    """
+    Prints each item in the specified list to the screen
+    """
     def writer(self,liste):
         for i in liste:
             i.get_news()
         print(("*"*40 + "\n" )*4)
-
+    """
+    Provides a mechanism to display the news list 'page by page
+    """
     def pages(self):
         page_list = page_creater(self.list)
         any_page = page_list[self.page_index]
         self.writer(any_page)
+
         def inner():
+
+            """
+            When the end of the page is reached, the following options are presented to the user:
+
+            n: Moves to the next page (does nothing if it doesn't exist).
+            p: Goes back to the previous page.
+            e: Exits.
+            """
             while True:
                 if  0< self.page_index< len(page_list) -1 :
                     print(Style.BRIGHT + Fore.BLUE + f"PAGE: {str(self.page_index + 1)}" + Style.RESET_ALL)
@@ -26,7 +44,10 @@ class news_writter:
                         return choice
                 else:
                     break
-                
+            
+            """
+            If you are on the first page, only the 'move forward (n)' or 'exit (e)' options are offered.
+            """            
             while True:
                 if self.page_index == 0:
                     print(Style.BRIGHT + Fore.BLUE + f"PAGE: {str(self.page_index + 1)}" + Style.RESET_ALL)
@@ -37,6 +58,10 @@ class news_writter:
                         return choice
                 else:
                     break
+            
+            """
+            If you are on the last page, only the 'go back (p)' or 'exit (e)' options are offered
+            """            
             while True:
                 if self.page_index == len(page_list) -1 :
                     print(Style.BRIGHT + Fore.BLUE + f"PAGE: {str(self.page_index + 1)}" + Style.RESET_ALL)
@@ -49,6 +74,12 @@ class news_writter:
                 else:
                     break
         
+        """
+        Kullanıcı inner() fonksiyonuyla bir seçim yaptıktan sonra:
+        Eğer n seçtiyse, bir sonraki sayfaya geçilir.
+        Eğer p seçtiyse, bir önceki sayfaya geri gidilir.
+        Eğer e seçtiyse, döngü kırılır ve program sonlanır.
+        """
         while True:
             choice = inner()
             print(("*"*40 + "\n" )*10)

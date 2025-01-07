@@ -83,7 +83,7 @@ class news_repo:
         self.text = ""
 
         self.website_url = "https://api.worldnewsapi.com"
-        self.api_key = "cead7d36af904c9a9cb91ce0eef816de"
+        self.api_key = "your_api_key"
         self.header = {"x-api-key" : self.api_key}
         self.list_of_news = []
     
@@ -244,14 +244,5 @@ def page_creater(list_of_news):
         x = list_of_news[i*10 : (i+1) *10 ]
         split_list.append(x)
     return split_list
-
-
-
-#todo ilk önce diğer gmailden yeni api al sonra function ların Description larını hazırla ve dosyayı clearla.
-#todo ardından main dosyasına geç ve projeyi bitir.  
-
-
-
-
 
 
