@@ -159,9 +159,12 @@ class panel:
     
     
     def set_filters(self):
+        """
+        the language and the country functions gets datas from worldnews website and when datas comes the functions are using  beatiful soup  module
+        """
         def language():
             url = "https://worldnewsapi.com/docs/language-codes/"
-            header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
+            header = {"User-Agent":"your_agent_informations"}
             html_codes = requests.get(url=url,headers=header).content
             soup = BeautifulSoup(html_codes,"html.parser")
             languages = soup.find("div",{"id":"apiDocRightSide"}).find_all("td")
@@ -170,7 +173,7 @@ class panel:
             return [list_long_language,list_short_language]
         def country():
             url = "https://worldnewsapi.com/docs/country-codes/"
-            header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
+            header = {"User-Agent":"your_agent_informations"}
             html_codes = requests.get(url=url,headers=header).content
             soup = BeautifulSoup(html_codes,"html.parser")
             countrys = soup.find("div",{"id":"apiDocRightSide"}).find_all("td")
@@ -179,8 +182,10 @@ class panel:
             return [list_long_country,list_short_country]        
         list_language =  language()
         list_country = country()
+        
         while True:
             choice = input("1-language\n2-country\n3-earliest publish date\n4-author\nwhich filter will be changed: ")
+
             if choice =="1" :
                 for name,value in zip(list_language[0],list_language[1]):
                     print(f"{name}- {value}")
@@ -334,7 +339,9 @@ class panel:
             else:
                 break
         self.main()
-        
+    """
+        search_news function takes news subject and checks for news related to it. If no news is found, the function outputs a warning.  
+    """
     def search_news(self):
         while True:
             try :
@@ -352,8 +359,6 @@ class panel:
             else:
                 break
         self.main()
-
-
 
 x = panel()
 x.main()
