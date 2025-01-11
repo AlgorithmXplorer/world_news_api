@@ -245,4 +245,3 @@ def page_creater(list_of_news):
         split_list.append(x)
     return split_list
 
-
